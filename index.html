@@ -23,7 +23,7 @@
 
     #menu {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Increased min-width slightly for the widget */
       gap: 15px;
       padding: 20px;
     }
@@ -31,15 +31,34 @@
     .game {
       background: #1e1e1e;
       border-radius: 10px;
-      padding: 15px;
+      padding: 10px;
       text-align: center;
       cursor: pointer;
       transition: transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 150px;
     }
 
     .game:hover {
       transform: scale(1.05);
       background: #2a2a2a;
+    }
+
+    /* This forces the itch.io widget to fit inside your card */
+    .game iframe {
+      width: 100%;
+      height: 167px; /* Matches the widget height */
+      border: none;
+      pointer-events: none; /* Allows the click to pass through to the 'playGame' function */
+    }
+
+    /* Style for the text inside the game card */
+    .game-title {
+        margin-bottom: 10px;
+        font-weight: bold;
     }
 
     #player {
@@ -49,7 +68,8 @@
       flex-direction: column;
     }
 
-    iframe {
+    /* This targets the big game player iframe only */
+    #gameFrame {
       flex: 1;
       border: none;
       background: black;
@@ -76,11 +96,11 @@
 
 <div id="menu">
   <div class="game" onclick="playGame('https://hafees.itch.io/cupcake-clicker')">
-    Cupcake clicker
+    <div class="game-title">Cupcake Clicker</div>
   </div>
 
   <div class="game" onclick="playGame('https://peralstudio.itch.io/cookie-empire-idle-clicker')">
-    Idle Clicker Game
+     <iframe height="167" frameborder="0" src="https://itch.io/embed/4188368"></iframe>
   </div>
 </div>
 
