@@ -22,9 +22,8 @@
     }
 
     #menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Increased min-width slightly for the widget */
-      gap: 15px;
+      display: flex;
+      justify-content: center;
       padding: 20px;
     }
 
@@ -32,33 +31,20 @@
       background: #1e1e1e;
       border-radius: 10px;
       padding: 10px;
-      text-align: center;
       cursor: pointer;
       transition: transform 0.2s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 150px;
+      width: 552px;
     }
 
     .game:hover {
-      transform: scale(1.05);
+      transform: scale(1.02);
       background: #2a2a2a;
     }
 
-    /* This forces the itch.io widget to fit inside your card */
+    /* Prevents the widget from stealing the click */
     .game iframe {
-      width: 100%;
-      height: 167px; /* Matches the widget height */
-      border: none;
-      pointer-events: none; /* Allows the click to pass through to the 'playGame' function */
-    }
-
-    /* Style for the text inside the game card */
-    .game-title {
-        margin-bottom: 10px;
-        font-weight: bold;
+      pointer-events: none;
+      display: block;
     }
 
     #player {
@@ -66,26 +52,39 @@
       height: 100vh;
       width: 100vw;
       flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: black;
+      z-index: 100;
     }
 
-    /* This targets the big game player iframe only */
     #gameFrame {
       flex: 1;
       border: none;
-      background: black;
+      width: 100%;
+      height: 100%;
+    }
+
+    .controls {
+      background: #222;
+      padding: 10px;
+      display: flex;
+      align-items: center;
     }
 
     button {
-      background: #222;
+      background: #444;
       color: white;
       border: none;
-      padding: 10px;
-      font-size: 16px;
+      padding: 8px 15px;
+      font-size: 14px;
       cursor: pointer;
+      border-radius: 5px;
     }
 
     button:hover {
-      background: #444;
+      background: #666;
     }
   </style>
 </head>
@@ -95,31 +94,36 @@
 <header>Game Hub</header>
 
 <div id="menu">
-  <div class="game" onclick="playGame('https://hafees.itch.io/cupcake-clicker')">
-    <div class="game-title">Cupcake Clicker</div>
-  </div>
-
-  <div class="game" onclick="playGame('https://peralstudio.itch.io/cookie-empire-idle-clicker')">
-     <iframe height="167" frameborder="0" src="https://itch.io/embed/4188368"></iframe>
+  <div class="game" onclick="playGame('1146239')">
+    <iframe height="167" frameborder="0" src="https://itch.io/embed/1146239" width="552"></iframe>
   </div>
 </div>
 
 <div id="player">
-  <button onclick="goBack()">⬅ Back to Games</button>
-  <iframe id="gameFrame" allowfullscreen></iframe>
+  <div class="controls">
+    <button onclick="goBack()">⬅ Back to Menu</button>
+  </div>
+  <iframe id="gameFrame" allowfullscreen allow="autoplay; gamepad; microphone; focus-lock"></iframe>
 </div>
 
 <script>
-  function playGame(url) {
-    document.getElementById("menu").style.display = "none";
-    document.getElementById("player").style.display = "flex";
-    document.getElementById("gameFrame").src = url;
+  function playGame(gameId) {
+    const player = document.getElementById("player");
+    const frame = document.getElementById("gameFrame");
+    
+    // This is the special "Embed" URL format that itch.io allows
+    // It bypasses the "Refused to Connect" error
+    frame.src = "https://itch.io/embed-upload/" + gameId + "?color=333333";
+    
+    player.style.display = "flex";
   }
 
   function goBack() {
-    document.getElementById("gameFrame").src = "";
-    document.getElementById("player").style.display = "none";
-    document.getElementById("menu").style.display = "grid";
+    const player = document.getElementById("player");
+    const frame = document.getElementById("gameFrame");
+    
+    frame.src = ""; // Stop the game music/process
+    player.style.display = "none";
   }
 </script>
 
